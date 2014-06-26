@@ -32,12 +32,11 @@
     
     // Create location manager with filters set for battery efficiency.
     RCLocationManager *locationManager = [RCLocationManager sharedManager];
-    [locationManager setPurpose:@"My custom purpose message"];
     [locationManager setUserDistanceFilter:kCLLocationAccuracyHundredMeters];
     [locationManager setUserDesiredAccuracy:kCLLocationAccuracyBest];
     
     // Start updating location changes.
-    [locationManager startUpdatingLocationWithBlock:^(CLLocationManager *manager, CLLocation *newLocation, CLLocation *oldLocation) {
+    [locationManager startUpdatingLocationWithBlock:^(CLLocationManager *manager, CLLocation *newLocation) {
         MKCoordinateRegion userLocation = MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 10000.0, 10000.0);
         [self.mapView setRegion:userLocation animated:YES];
         
@@ -86,7 +85,7 @@
 		
 		
 		// Start monitoring the newly created region.
-        [[RCLocationManager sharedManager] addRegionForMonitoring:newRegion desiredAccuracy:kCLLocationAccuracyBest updateBlock:^(CLLocationManager *manager, CLRegion *region, BOOL enter) {
+        [[RCLocationManager sharedManager] addRegionForMonitoring:newRegion updateBlock:^(CLLocationManager *manager, CLRegion *region, BOOL enter) {
             if (enter) {
                 NSLog(@"Enter to region %@", region);
             } else {

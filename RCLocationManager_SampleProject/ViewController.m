@@ -31,7 +31,7 @@
     self.infoBox.layer.cornerRadius = 6;
 
     // Create location manager with filters set for battery efficiency.
-    locationManager = [[RCLocationManager alloc] initWithUserDistanceFilter:kCLLocationAccuracyHundredMeters userDesiredAccuracy:kCLLocationAccuracyBest purpose:@"My custom purpose message" delegate:self];
+    locationManager = [[RCLocationManager alloc] initWithUserDistanceFilter:kCLLocationAccuracyHundredMeters userDesiredAccuracy:kCLLocationAccuracyBest delegate:self];
     
     // Start updating location changes.
     [locationManager startUpdatingLocation];
@@ -126,7 +126,7 @@
 			CLRegion *newRegion = [[CLRegion alloc] initCircularRegionWithCenter:regionAnnotation.coordinate radius:1000.0 identifier:[NSString stringWithFormat:@"%f, %f", regionAnnotation.coordinate.latitude, regionAnnotation.coordinate.longitude]];
 			regionAnnotation.region = newRegion;
 			
-			[locationManager addRegionForMonitoring:newRegion desiredAccuracy:kCLLocationAccuracyBest];
+			[locationManager addRegionForMonitoring:newRegion];
 		}
 	}
 }
@@ -172,7 +172,7 @@
 		
 		
 		// Start monitoring the newly created region.
-        [locationManager addRegionForMonitoring:newRegion desiredAccuracy:kCLLocationAccuracyBest];
+        [locationManager addRegionForMonitoring:newRegion];
 	}
 	else {
 		NSLog(@"Region monitoring is not available.");
