@@ -20,7 +20,7 @@
 extern NSString * const RCLocationManagerUserLocationDidChangeNotification;
 extern NSString * const RCLocationManagerNotificationLocationUserInfoKey;
 
-typedef void(^RCLocationManagerLocationUpdateBlock)(CLLocationManager *manager, CLLocation *newLocation, CLLocation *oldLocation);
+typedef void(^RCLocationManagerLocationUpdateBlock)(CLLocationManager *manager, CLLocation *newLocation);
 typedef void (^RCLocationManagerLocationUpdateFailBlock)(CLLocationManager *manager, NSError *error);
 
 typedef void(^RCLocationManagerRegionUpdateBlock)(CLLocationManager *manager, CLRegion *region, BOOL enter);
@@ -37,11 +37,6 @@ typedef void(^RCLocationManagerRegionUpdateFailBlock)(CLLocationManager *manager
  */
 @property (nonatomic, readonly) CLLocation *location;
 
-/**
- * @discussion string that describes the reason for using location services.
- */
-@property (nonatomic, copy) NSString *purpose;
-
 #pragma mark - Customization
 
 // Timeout for retrieving an accurate location using blocks, default is 10 seconds
@@ -57,7 +52,7 @@ typedef void(^RCLocationManagerRegionUpdateFailBlock)(CLLocationManager *manager
 
 + (RCLocationManager *)sharedManager;
 
-- (id)initWithUserDistanceFilter:(CLLocationDistance)userDistanceFilter userDesiredAccuracy:(CLLocationAccuracy)userDesiredAccuracy purpose:(NSString *)purpose delegate:(id<RCLocationManagerDelegate>)delegate;
+- (id)initWithUserDistanceFilter:(CLLocationDistance)userDistanceFilter userDesiredAccuracy:(CLLocationAccuracy)userDesiredAccuracy delegate:(id<RCLocationManagerDelegate>)delegate;
 
 + (BOOL)locationServicesEnabled;
 + (BOOL)regionMonitoringAvailable;
@@ -65,18 +60,16 @@ typedef void(^RCLocationManagerRegionUpdateFailBlock)(CLLocationManager *manager
 + (BOOL)significantLocationChangeMonitoringAvailable;
 
 - (void)startUpdatingLocation;
-- (void)startUpdatingLocationWithBlock:(RCLocationManagerLocationUpdateBlock)block errorBlock:(RCLocationManagerLocationUpdateFailBlock)errorBlock; // USING BLOCKS
-- (void)retrieveUserLocationWithBlock:(RCLocationManagerLocationUpdateBlock)block errorBlock:(RCLocationManagerLocationUpdateFailBlock)errorBlock; // USING BLOCKS. Only 1 time. 
+- (void)startUpdatingLocationWithBlock:(RCLocationManagerLocationUpdateBlock)block errorBlock:(RCLocationManagerLocationUpdateFailBlock)errorBlock;
+- (void)retrieveUserLocationWithBlock:(RCLocationManagerLocationUpdateBlock)block errorBlock:(RCLocationManagerLocationUpdateFailBlock)errorBlock;
 - (void)updateUserLocation;
 - (void)stopUpdatingLocation;
 
 - (void)addCoordinateForMonitoring:(CLLocationCoordinate2D)coordinate;
 - (void)addCoordinateForMonitoring:(CLLocationCoordinate2D)coordinate withRadius:(CLLocationDistance)radius;
-- (void)addCoordinateForMonitoring:(CLLocationCoordinate2D)coordinate withRadius:(CLLocationDistance)radius desiredAccuracy:(CLLocationAccuracy)accuracy;
 
 - (void)addRegionForMonitoring:(CLRegion *)region;
-- (void)addRegionForMonitoring:(CLRegion *)region desiredAccuracy:(CLLocationAccuracy)accuracy;
-- (void)addRegionForMonitoring:(CLRegion *)region desiredAccuracy:(CLLocationAccuracy)accuracy updateBlock:(RCLocationManagerRegionUpdateBlock)block errorBlock:(RCLocationManagerRegionUpdateFailBlock)errorBlock; // USING BLOCKS
+- (void)addRegionForMonitoring:(CLRegion *)region updateBlock:(RCLocationManagerRegionUpdateBlock)block errorBlock:(RCLocationManagerRegionUpdateFailBlock)errorBlock;
 - (void)stopMonitoringForRegion:(CLRegion *)region;
 - (void)stopMonitoringAllRegions;
 
@@ -86,7 +79,7 @@ typedef void(^RCLocationManagerRegionUpdateFailBlock)(CLLocationManager *manager
 
 @optional
 - (void)locationManager:(RCLocationManager *)manager didFailWithError:(NSError *)error;
-- (void)locationManager:(RCLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation;
+- (void)locationManager:(RCLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation;
 - (void)locationManager:(RCLocationManager *)manager didEnterRegion:(CLRegion *)region;
 - (void)locationManager:(RCLocationManager *)manager didExitRegion:(CLRegion *)region;
 - (void)locationManager:(RCLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error;
